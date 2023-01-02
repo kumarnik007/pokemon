@@ -3,8 +3,12 @@ import React from 'react';
 
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import { HashRouter } from 'react-router-dom';
+import { App } from './App';
 
 createRoot(document.getElementById('root') as HTMLDivElement)
   .render(
-    <h1>Hello Pokemons!!</h1>,
+    <HashRouter>
+      <App />
+    </HashRouter>,
   );
