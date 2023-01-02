@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPokemons, POKEMON_API_URL } from "../../api";
-import { NamedAPIResource } from "../../types";
+import { getPokemon, POKEMON_API_URL } from "../../api";
+import { NamedAPIResource, NamedAPIResourceList } from "../../types";
 import { Loader } from "../Loader";
 import { PokemonDetail } from "../PokemonDetail";
 
@@ -18,7 +18,7 @@ export const PokemonList = () => {
     try {
       setIsLoading(true);
       setErrorLoading(false);
-      const fetchedData = await getPokemons(url);
+      const fetchedData = await getPokemon<NamedAPIResourceList>(url);
 
       setPokemons(fetchedData.results);
       setNextOffset(fetchedData.next);
@@ -44,8 +44,6 @@ export const PokemonList = () => {
     fetchPokemons(prevOffset);
   }, [prevOffset]);
 
-  console.log('Fetched pokemons are ', pokemons);
-
   return (
     <>
       <h1 className="title">Pokemons</h1>
@@ -69,7 +67,7 @@ export const PokemonList = () => {
           {(pokemons.length > 0 && !isLoading) && (
             <div className="container">
               <div className="tile is-ancestor">
-                <ul className="is-parent">
+                <ul className="tile is-parent is-vertical">
                   {pokemons.map((pokemon, idx) => (
                     <li
                       key={idx}
@@ -86,7 +84,7 @@ export const PokemonList = () => {
                 </ul>
 
                 <nav
-                  className="pagination is-centered"
+                  className="pagination is-centered is-parent tile"
                   role="navigation"
                   aria-label="pagination"
                 >
@@ -110,11 +108,16 @@ export const PokemonList = () => {
                 <div
                   className={classNames(
                     'tile',
+                    'is-parent',
+                    'Sidebar',
+                    {
+                      'Sidebar--open': selectedPokemon,
+                    },
                   )}
                 >
                   {selectedPokemon && (
                     <div className="tile is-child box is-success ">
-                      {<PokemonDetail pokemon={selectedPokemon}/>}
+                      {<PokemonDetail resource={selectedPokemon}/>}
                     </div>
                   )}
                 </div>
