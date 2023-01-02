@@ -4,7 +4,6 @@ import { HomePage } from './components/HomePage';
 import React from 'react';
 import { Navbar } from './components/Navbar';
 import { PokemonList } from './components/PokemonList';
-import { PokemonDetail } from './components/PokemonDetail';
 
 export const App = () => (
   <div data-cy="app">
@@ -31,7 +30,7 @@ export const App = () => (
           >
             <Route
               path=":name"
-              element={<PokemonDetail />}
+              element={<PokemonList />}
             />
           </Route>
         </Routes>

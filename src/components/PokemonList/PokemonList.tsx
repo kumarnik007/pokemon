@@ -1,13 +1,16 @@
+import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPokemons, POKEMON_API_URL } from "../../api";
 import { NamedAPIResource } from "../../types";
 import { Loader } from "../Loader";
+import { PokemonDetail } from "../PokemonDetail";
 
 export const PokemonList = () => {
   const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
   const [nextOffset, setNextOffset] = useState(POKEMON_API_URL);
   const [prevOffset, setPrevOffset] = useState('');
+  const [selectedPokemon, setSelectedPokemon] = useState<NamedAPIResource | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorLoading, setErrorLoading] = useState(false);
 
@@ -32,10 +35,12 @@ export const PokemonList = () => {
   }, []);
 
   const fetchNextPokemonPage = useCallback(() => {
+    setSelectedPokemon(null);
     fetchPokemons(nextOffset);
   }, [nextOffset]);
 
   const fetchPreviousPokemonPage = useCallback(() => {
+    setSelectedPokemon(null);
     fetchPokemons(prevOffset);
   }, [prevOffset]);
 
@@ -46,7 +51,7 @@ export const PokemonList = () => {
       <h1 className="title">Pokemons</h1>
 
       <div className="block">
-        <div className="box table-container">
+        <div className="box container">
           {isLoading && <Loader />}
 
           {errorLoading && (
@@ -61,45 +66,60 @@ export const PokemonList = () => {
             </p>
           )}
 
-          {(pokemons.length > 0) && (
-            <>
-              <ul>
-                {pokemons.map((pokemon, idx) => (
-                  <li
-                    key={idx}
-                    className="title is-4"
-                  >
-                    <Link to={`/pokemon/${pokemon.name}`} >
-                      {pokemon.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {(pokemons.length > 0 && !isLoading) && (
+            <div className="container">
+              <div className="tile is-ancestor">
+                <ul className="is-parent">
+                  {pokemons.map((pokemon, idx) => (
+                    <li
+                      key={idx}
+                      className="title is-4"
+                    >
+                      <Link
+                        to={`/pokemon/${pokemon.name}`}
+                        onClick={() => setSelectedPokemon(pokemon)}
+                      >
+                        {pokemon.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
 
-              <ul className="pagination">
-                <li className="page-item">
+                <nav
+                  className="pagination is-centered"
+                  role="navigation"
+                  aria-label="pagination"
+                >
                   <button
-                    type="button"
-                    className="page-link"
+                    className="pagination-previous"
                     disabled={!prevOffset}
                     onClick={fetchPreviousPokemonPage}
                   >
                     Previous
                   </button>
-                </li>
 
-                <li className="page-item">
                   <button
-                    type="button"
-                    className="page-link"
+                    className="pagination-next"
                     disabled={!nextOffset}
                     onClick={fetchNextPokemonPage}
                   >
                     Next
                   </button>
-                </li>
-              </ul>
-            </>
+                </nav>
+
+                <div
+                  className={classNames(
+                    'tile',
+                  )}
+                >
+                  {selectedPokemon && (
+                    <div className="tile is-child box is-success ">
+                      {<PokemonDetail pokemon={selectedPokemon}/>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
