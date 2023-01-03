@@ -5,6 +5,7 @@ import React from 'react';
 import { Navbar } from './components/Navbar';
 import { PokemonList } from './components/PokemonList';
 import { NotFoundPage } from './components/NotFoundPage';
+import { PokemonSearch } from './components/PokemonSearch';
 
 export const App = () => (
   <div data-cy="app">
@@ -34,6 +35,11 @@ export const App = () => (
               element={<PokemonList />}
             />
           </Route>
+
+          <Route
+            path="/search"
+            element={<PokemonSearch />}
+          />
 
           <Route
             path="*"

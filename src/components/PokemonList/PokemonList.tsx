@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getPokemon, POKEMON_API_URL } from "../../api";
 import { NamedAPIResource, NamedAPIResourceList } from "../../types";
 import { Loader } from "../Loader";
-import { PokemonDetail } from "../PokemonDetail";
+import { PokemonFetch } from "../PokemonFetch";
 
 export const PokemonList = () => {
   const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
@@ -113,7 +113,7 @@ export const PokemonList = () => {
                     }
                   )}
                 >
-                  <PokemonDetail
+                  <PokemonFetch
                     resource={selectedPokemon}
                     onSelectResource={setSelectedPokemon}
                   />

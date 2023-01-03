@@ -38,6 +38,20 @@ export const Navbar = () => (
         >
           Pokemons
         </NavLink>
+
+        <NavLink
+          className={({ isActive }) => (
+            classNames(
+              'navbar-item',
+              {
+                'has-background-grey-lighter': isActive,
+              },
+            )
+          )}
+          to="/search"
+        >
+          Search
+        </NavLink>
       </div>
     </div>
   </nav>
