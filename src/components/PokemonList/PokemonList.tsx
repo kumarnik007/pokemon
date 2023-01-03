@@ -66,62 +66,59 @@ export const PokemonList = () => {
 
           {(pokemons.length > 0 && !isLoading) && (
             <div className="container">
-              <div className="tile is-ancestor">
-                <ul className="tile is-parent is-vertical">
-                  {pokemons.map((pokemon, idx) => (
-                    <li
-                      key={idx}
-                      className="title is-4"
+              <ul className="tile is-parent is-vertical">
+                {pokemons.map((pokemon, idx) => (
+                  <li
+                    key={idx}
+                    className="title is-4"
+                  >
+                    <Link
+                      to={`/pokemon/${pokemon.name}`}
+                      onClick={() => setSelectedPokemon(pokemon)}
                     >
-                      <Link
-                        to={`/pokemon/${pokemon.name}`}
-                        onClick={() => setSelectedPokemon(pokemon)}
-                      >
-                        {pokemon.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                      {pokemon.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-                <nav
-                  className="pagination is-centered is-parent tile"
-                  role="navigation"
-                  aria-label="pagination"
+              <nav
+                className="pagination is-centered is-parent tile"
+                role="navigation"
+                aria-label="pagination"
+              >
+                <button
+                  className="pagination-previous"
+                  disabled={!prevOffset}
+                  onClick={fetchPreviousPokemonPage}
                 >
-                  <button
-                    className="pagination-previous"
-                    disabled={!prevOffset}
-                    onClick={fetchPreviousPokemonPage}
-                  >
-                    Previous
-                  </button>
+                  Previous
+                </button>
 
-                  <button
-                    className="pagination-next"
-                    disabled={!nextOffset}
-                    onClick={fetchNextPokemonPage}
-                  >
-                    Next
-                  </button>
-                </nav>
+                <button
+                  className="pagination-next"
+                  disabled={!nextOffset}
+                  onClick={fetchNextPokemonPage}
+                >
+                  Next
+                </button>
+              </nav>
 
+              {selectedPokemon && (
                 <div
                   className={classNames(
-                    'tile',
-                    'is-parent',
-                    'Sidebar',
+                    'modal',
                     {
-                      'Sidebar--open': selectedPokemon,
-                    },
+                      'is-active': selectedPokemon,
+                    }
                   )}
                 >
-                  {selectedPokemon && (
-                    <div className="tile is-child box is-success ">
-                      {<PokemonDetail resource={selectedPokemon}/>}
-                    </div>
-                  )}
+                  <PokemonDetail
+                    resource={selectedPokemon}
+                    onSelectResource={setSelectedPokemon}
+                  />
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
