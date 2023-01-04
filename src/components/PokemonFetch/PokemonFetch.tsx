@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { getPokemon } from "../../api";
-import { NamedAPIResource, Pokemon } from "../../types";
+import { NamedAPIResource, Pokemon } from "../../types/Pokemon";
 import { Loader } from "../Loader";
 import { PokemonInfo } from "../PokemonInfo";
 
@@ -22,7 +22,7 @@ export const PokemonFetch: React.FC<Props> = ({
     try {
       setIsPokemonLoading(true);
       setErrorLoadingPokemon(false);
-      const fetchedData = await getPokemon<Pokemon>(url);
+      const fetchedData = await getPokemon<Pokemon>({ url });
 
       setPokemon(fetchedData);
     } catch (error) {

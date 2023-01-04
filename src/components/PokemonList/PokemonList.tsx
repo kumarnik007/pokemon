@@ -1,24 +1,25 @@
 import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPokemon, POKEMON_API_URL } from "../../api";
-import { NamedAPIResource, NamedAPIResourceList } from "../../types";
+import { getPokemon, API_URL } from "../../api";
+import { ApiParam } from "../../types/ApiParam";
+import { NamedAPIResource, NamedAPIResourceList } from "../../types/Pokemon";
 import { Loader } from "../Loader";
 import { PokemonFetch } from "../PokemonFetch";
 
 export const PokemonList = () => {
   const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
-  const [nextOffset, setNextOffset] = useState(POKEMON_API_URL);
+  const [nextOffset, setNextOffset] = useState('');
   const [prevOffset, setPrevOffset] = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState<NamedAPIResource | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorLoading, setErrorLoading] = useState(false);
 
-  const fetchPokemons = useCallback(async (url: string) => {
+  const fetchPokemons = useCallback(async (param: ApiParam) => {
     try {
       setIsLoading(true);
       setErrorLoading(false);
-      const fetchedData = await getPokemon<NamedAPIResourceList>(url);
+      const fetchedData = await getPokemon<NamedAPIResourceList>(param);
 
       setPokemons(fetchedData.results);
       setNextOffset(fetchedData.next);
@@ -31,17 +32,20 @@ export const PokemonList = () => {
   }, []);
 
   useEffect(() => {
-    fetchPokemons(nextOffset);
+    fetchPokemons({
+      endpoint: 'pokemon',
+      query: '?limit=10',
+    });
   }, []);
 
   const fetchNextPokemonPage = useCallback(() => {
     setSelectedPokemon(null);
-    fetchPokemons(nextOffset);
+    fetchPokemons({ url: nextOffset });
   }, [nextOffset]);
 
   const fetchPreviousPokemonPage = useCallback(() => {
     setSelectedPokemon(null);
-    fetchPokemons(prevOffset);
+    fetchPokemons({ url: prevOffset });
   }, [prevOffset]);
 
   return (

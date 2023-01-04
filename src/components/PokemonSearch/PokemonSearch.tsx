@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useCallback, useMemo, useState } from "react";
 import { getPokemon } from "../../api";
-import { Pokemon } from "../../types";
+import { Pokemon } from "../../types/Pokemon";
 import { PokemonInfo } from "../PokemonInfo";
 import './PokemonSearch.scss';
 
@@ -40,9 +40,10 @@ export const PokemonSearch = () => {
         setNameError(false);
         setAbilityError(false);
         setMoveError(false);
-        const result = await getPokemon<Pokemon>(
-          `https://pokeapi.co/api/v2/pokemon/${nameQuery}`
-        );
+        const result = await getPokemon<Pokemon>({
+          endpoint: 'pokemon',
+          resource: nameQuery,
+        });
 
         setPokemon(result);
         setNameQuery('');
