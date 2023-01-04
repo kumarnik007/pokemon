@@ -10,7 +10,7 @@ export interface NamedAPIResourceList {
   results: NamedAPIResource[],
 }
 
-export interface Abilities {
+export interface Ability {
   is_hidden: boolean,
   slot: number,
   ability: NamedAPIResource,
@@ -22,12 +22,12 @@ export interface MoveDetail {
   move_learn_method: NamedAPIResource,
 }
 
-export interface Moves {
+export interface Move {
   move: NamedAPIResource,
   version_group_details: MoveDetail[],
 }
 
-export interface Sprites {
+export interface Sprite {
   back_default: string,
   back_female: string,
   back_shiny: string,
@@ -43,7 +43,7 @@ export interface Pokemon {
   name: string,
   height: number,
   weight: number,
-  abilities: Abilities[],
-  moves: Moves[],
-  sprites: Sprites,
+  abilities: Ability[],
+  moves: Move[],
+  sprites: Sprite,
 }

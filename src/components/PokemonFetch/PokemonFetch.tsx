@@ -1,8 +1,9 @@
+import classNames from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { getPokemon } from "../../api";
 import { NamedAPIResource, Pokemon } from "../../types";
 import { Loader } from "../Loader";
-import { PokemonDetail } from "../PokemonDetail";
+import { PokemonInfo } from "../PokemonInfo";
 
 interface Props {
   resource: NamedAPIResource,
@@ -35,16 +36,31 @@ export const PokemonFetch: React.FC<Props> = ({
     fetchPokemon(resource.url);
   }, [resource]);
 
-  console.log('Fetched pokemon is ', pokemon);
+  const closePokemon = useCallback(() => {
+    setPokemon(null);
+    onSelectResource(null);
+  }, []);
 
   return (
     <>
       <div
-        className="modal-background"
+        className={classNames(
+          'modal-background',
+          {
+            'is-hidden': pokemon,
+          },
+        )}
         onClick={() => onSelectResource(null)}
       />
 
-      <div className="modal-card">
+      <div
+        className={classNames(
+          'modal-card',
+          {
+            'is-hidden': pokemon,
+          }
+        )}
+      >
         <header className="modal-card-head">
           <p className="modal-card-title">
             {resource.name}
@@ -73,12 +89,15 @@ export const PokemonFetch: React.FC<Props> = ({
               No Pokemon Found
             </p>
           )}
-
-          {pokemon && (
-            <PokemonDetail pokemon={pokemon} />
-          )}
         </section>
       </div>
+
+      {pokemon && (
+        <PokemonInfo
+          pokemon={pokemon}
+          onCloseModal={closePokemon}
+        />
+      )}
     </>
   );
 };

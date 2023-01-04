@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useCallback, useMemo, useState } from "react";
 import { getPokemon } from "../../api";
 import { Pokemon } from "../../types";
-import { PokemonDetail } from "../PokemonDetail";
+import { PokemonInfo } from "../PokemonInfo";
 import './PokemonSearch.scss';
 
 export const PokemonSearch = () => {
@@ -86,6 +86,10 @@ export const PokemonSearch = () => {
       setAbilityError(false);
     }, [],
   );
+
+  const closePokemon = useCallback(() => {
+    setPokemon(null);
+  }, []);
 
   return (
     <>
@@ -196,7 +200,10 @@ export const PokemonSearch = () => {
             }
           )}
         >
-          <PokemonDetail pokemon={pokemon} />
+          <PokemonInfo
+            pokemon={pokemon}
+            onCloseModal={closePokemon}
+          />
         </div>
       )}
     </>
