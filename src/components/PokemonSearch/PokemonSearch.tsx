@@ -79,7 +79,6 @@ export const PokemonSearch = () => {
         if (!abilityQueryDisabled) {
           const result = await getPokemon<Ability>(apiParam);
 
-          console.log('result is ', result);
           setPokemons(result.pokemon.map(p => ({
             name: p.pokemon.name,
             url: p.pokemon.url,
@@ -89,7 +88,6 @@ export const PokemonSearch = () => {
         if (!moveQueryDisabled) {
           const result = await getPokemon<Move>(apiParam);
 
-          console.log('result is ', result);
           setPokemons(result.learned_by_pokemon);
         }
 
@@ -113,6 +111,15 @@ export const PokemonSearch = () => {
       setIsLoading(false);
     }, [nameQuery, abilityQuery, moveQuery],
   );
+
+  const clearForm = useCallback(() => {
+    setNameQuery('');
+    setNameError(false);
+    setAbilityQuery('');
+    setAbilityError(false);
+    setMoveQuery('');
+    setMoveError(false);
+  }, []);
 
   const handleNameQueryChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,7 +236,18 @@ export const PokemonSearch = () => {
               )}
               disabled={submitDisabled}
             >
-              {pokemons.length > 0 ? ('Search again') : ('Find a pokemon')}
+              {pokemons.length > 0
+                ? ('Search again')
+                : ('Find pokemon')}
+            </button>
+
+            <button
+              type="reset"
+              className="button is-light"
+              disabled={submitDisabled}
+              onClick={clearForm}
+            >
+              Clear
             </button>
           </div>
         </div>
