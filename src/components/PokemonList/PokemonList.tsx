@@ -30,18 +30,20 @@ export const PokemonList: React.FC<Props> = ({
       </ul>
 
       {selectedPokemon && (
-        <div
-          className={classNames(
-            'modal',
-            {
-              'is-active': selectedPokemon,
-            }
-          )}
-        >
-          <PokemonFetch
-            resource={selectedPokemon}
-            onSelectResource={setSelectedPokemon}
-          />
+        <div className="container is-clipped">
+          <div
+            className={classNames(
+              'modal',
+              {
+                'is-active': selectedPokemon,
+              }
+            )}
+          >
+            <PokemonFetch
+              resource={selectedPokemon}
+              onSelectResource={setSelectedPokemon}
+            />
+          </div>
         </div>
       )}
     </>
