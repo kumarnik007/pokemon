@@ -1,13 +1,13 @@
 import classNames from "classnames";
 import React, { useCallback, useMemo, useState } from "react";
-import { getPokemon } from "../../api";
+import { API_URL, getPokemon } from "../../api";
 import { ApiParam } from "../../types/ApiParam";
-import { Pokemon } from "../../types/Pokemon";
-import { PokemonInfo } from "../PokemonInfo";
+import { Ability, Move, NamedAPIResource, Pokemon } from "../../types/Pokemon";
+import { PokemonList } from "../PokemonList";
 import './PokemonSearch.scss';
 
 export const PokemonSearch = () => {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
   const [nameQuery, setNameQuery] = useState('');
   const [isNameError, setNameError] = useState(false);
   const [moveQuery, setMoveQuery] = useState('');
@@ -66,10 +66,33 @@ export const PokemonSearch = () => {
         setNameError(false);
         setAbilityError(false);
         setMoveError(false);
-        const result = await getPokemon<Pokemon>(apiParam);
+        setPokemons([]);
+        if (!nameQueryDisabled) {
+          await getPokemon<Pokemon>(apiParam);
 
-        console.log('Got result ', result);
-        setPokemon(result);
+          setPokemons([{
+            name: nameQuery,
+            url: `${API_URL}pokemon/${nameQuery}`
+          }]);
+        }
+
+        if (!abilityQueryDisabled) {
+          const result = await getPokemon<Ability>(apiParam);
+
+          console.log('result is ', result);
+          setPokemons(result.pokemon.map(p => ({
+            name: p.pokemon.name,
+            url: p.pokemon.url,
+          })));
+        }
+
+        if (!moveQueryDisabled) {
+          const result = await getPokemon<Move>(apiParam);
+
+          console.log('result is ', result);
+          setPokemons(result.learned_by_pokemon);
+        }
+
         setNameQuery('');
         setMoveQuery('');
         setAbilityQuery('');
@@ -111,10 +134,6 @@ export const PokemonSearch = () => {
       setAbilityError(false);
     }, [],
   );
-
-  const closePokemon = useCallback(() => {
-    setPokemon(null);
-  }, []);
 
   return (
     <>
@@ -210,25 +229,17 @@ export const PokemonSearch = () => {
               )}
               disabled={submitDisabled}
             >
-              {pokemon ? ('Search again') : ('Find a pokemon')}
+              {pokemons.length > 0 ? ('Search again') : ('Find a pokemon')}
             </button>
           </div>
         </div>
       </form>
 
-      {pokemon && (
-        <div
-          className={classNames(
-            'modal',
-            {
-              'is-active': pokemon,
-            }
-          )}
-        >
-          <PokemonInfo
-            pokemon={pokemon}
-            onCloseModal={closePokemon}
-          />
+      {pokemons.length > 0 && (
+        <div className="container box">
+          <h1 className="title">Pokemons</h1>
+
+          <PokemonList pokemons={pokemons} />
         </div>
       )}
     </>

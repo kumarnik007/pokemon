@@ -29,12 +29,7 @@ export const App = () => (
           <Route
             path="/pokemon"
             element={<PokemonsPage />}
-          >
-            <Route
-              path=":name"
-              element={<PokemonsPage />}
-            />
-          </Route>
+          />
 
           <Route
             path="/search"

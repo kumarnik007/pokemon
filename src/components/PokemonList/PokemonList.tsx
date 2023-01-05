@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { NamedAPIResource } from "../../types/Pokemon";
 import { PokemonFetch } from "../PokemonFetch";
 
@@ -21,12 +20,11 @@ export const PokemonList: React.FC<Props> = ({
             key={idx}
             className="title is-4"
           >
-            <Link
-              to={`/pokemon/${pokemon.name}`}
+            <a
               onClick={() => setSelectedPokemon(pokemon)}
             >
               {pokemon.name}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>
