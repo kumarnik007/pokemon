@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, { useCallback, useMemo, useState } from "react";
 import { getPokemon } from "../../api";
+import { ApiParam } from "../../types/ApiParam";
 import { Pokemon } from "../../types/Pokemon";
 import { PokemonInfo } from "../PokemonInfo";
 import './PokemonSearch.scss';
@@ -14,23 +15,48 @@ export const PokemonSearch = () => {
   const [abilityQuery, setAbilityQuery] = useState('');
   const [isAbilityError, setAbilityError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const searchQueries = [nameQuery, moveQuery, abilityQuery];
+
   const submitDisabled = useMemo(() => (
-    nameQuery.length === 0
-    && moveQuery.length === 0
-    && abilityQuery.length === 0
+    searchQueries.every(query => query.length === 0)
   ), [nameQuery, moveQuery, abilityQuery])
+
   const nameQueryDisabled = useMemo(() => (
-    moveQuery.length !== 0
-    || abilityQuery.length !== 0
+    moveQuery.length !== 0 || abilityQuery.length !== 0
   ), [moveQuery, abilityQuery])
+
   const moveQueryDisabled = useMemo(() => (
-    nameQuery.length !== 0
-    || abilityQuery.length !== 0
+    nameQuery.length !== 0 || abilityQuery.length !== 0
   ), [nameQuery, abilityQuery])
+
   const abilityQueryDisabled = useMemo(() => (
-    moveQuery.length !== 0
-    || nameQuery.length !== 0
+    moveQuery.length !== 0 || nameQuery.length !== 0
   ), [moveQuery, nameQuery])
+
+  const apiParam: ApiParam = useMemo(() => {
+    if (!nameQueryDisabled) {
+      return {
+        endpoint: 'pokemon',
+        resource: nameQuery,
+      }
+    }
+
+    if (!moveQueryDisabled) {
+      return {
+        endpoint: 'move',
+        resource: moveQuery,
+      }
+    }
+
+    if (!abilityQueryDisabled) {
+      return {
+        endpoint: 'ability',
+        resource: abilityQuery,
+      }
+    }
+
+    return {};
+  }, [nameQuery, moveQuery, abilityQuery])
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent) => {
@@ -40,11 +66,9 @@ export const PokemonSearch = () => {
         setNameError(false);
         setAbilityError(false);
         setMoveError(false);
-        const result = await getPokemon<Pokemon>({
-          endpoint: 'pokemon',
-          resource: nameQuery,
-        });
+        const result = await getPokemon<Pokemon>(apiParam);
 
+        console.log('Got result ', result);
         setPokemon(result);
         setNameQuery('');
         setMoveQuery('');

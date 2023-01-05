@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { HomePage } from './components/HomePage';
 import React from 'react';
 import { Navbar } from './components/Navbar';
-import { PokemonList } from './components/PokemonList';
+import { PokemonsPage } from './components/PokemonsPage';
 import { NotFoundPage } from './components/NotFoundPage';
 import { PokemonSearch } from './components/PokemonSearch';
 
@@ -28,11 +28,11 @@ export const App = () => (
 
           <Route
             path="/pokemon"
-            element={<PokemonList />}
+            element={<PokemonsPage />}
           >
             <Route
               path=":name"
-              element={<PokemonList />}
+              element={<PokemonsPage />}
             />
           </Route>
 
