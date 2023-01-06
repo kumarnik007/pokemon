@@ -52,13 +52,13 @@ export const PokemonsPage = () => {
           {isLoading && <Loader />}
 
           {errorLoading && (
-            <p data-cy="peopleLoadingError" className="has-text-danger">
+            <p className="has-text-danger">
               Something went wrong
             </p>
           )}
 
           {(pokemons.length === 0) && !errorLoading && !isLoading && (
-            <p data-cy="noPeopleMessage">
+            <p>
               There are no pokemons on the server
             </p>
           )}

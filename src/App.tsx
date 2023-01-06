@@ -8,7 +8,7 @@ import { NotFoundPage } from './components/NotFoundPage';
 import { PokemonSearch } from './components/PokemonSearch';
 
 export const App = () => (
-  <div data-cy="app">
+  <div>
     <Navbar />
 
     <main className="section">

@@ -85,7 +85,7 @@ export const PokemonFetch: React.FC<Props> = ({
           )}
 
           {!isPokemonLoading && !errorLoadingPokemon && !pokemon && (
-            <p className="title is-4" data-cy="NoCommentsMessage">
+            <p className="title is-4">
               No Pokemon Found
             </p>
           )}
