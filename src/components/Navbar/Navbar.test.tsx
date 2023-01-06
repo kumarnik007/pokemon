@@ -43,5 +43,55 @@ describe('Navbar', () => {
   it('renders navbar with 3 links', () => {
     expect(container?.getElementsByClassName('navbar-item').length)
       .toBe(3);
+    expect(container?.getElementsByClassName('navbar-item')[0].textContent)
+      .toBe('Home');
+    expect(container?.getElementsByClassName('navbar-item')[1].textContent)
+      .toBe('Pokemons');
+    expect(container?.getElementsByClassName('navbar-item')[2].textContent)
+      .toBe('Search');
+  });
+
+  describe('highlights clicked link', () => {
+    it('pokemon link has light grey background', () => {
+      const navPokemons = document.querySelector('#pokemon');
+
+      expect(navPokemons?.className)
+        .not.toContain('has-background-grey-lighter');
+
+      act(() => {
+        navPokemons?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+
+      expect(navPokemons?.className)
+        .toContain('has-background-grey-lighter');
+    });
+
+    it('home link has light grey background', () => {
+      const navHome = document.querySelector('#home');
+
+      expect(navHome?.className)
+        .not.toContain('has-background-grey-lighter');
+
+      act(() => {
+        navHome?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+
+      expect(navHome?.className)
+        .toContain('has-background-grey-lighter');
+    });
+
+    it('search link has light grey background', () => {
+      const navSearch = document.querySelector('#search');
+
+      expect(navSearch?.className)
+        .not.toContain('has-background-grey-lighter');
+
+      act(() => {
+        navSearch?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      });
+
+      expect(navSearch?.className)
+        .toContain('has-background-grey-lighter');
+    });
   });
 });

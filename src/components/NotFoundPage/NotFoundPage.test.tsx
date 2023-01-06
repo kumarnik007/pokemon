@@ -1,13 +1,13 @@
-import { act } from '@testing-library/react';
 import React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
 import { createRoot } from 'react-dom/client';
+import { act } from '@testing-library/react';
 
-import { Loader } from './Loader';
+import { NotFoundPage } from './NotFoundPage';
 
 let container: HTMLDivElement | null = null;
 
-describe('loader', () => {
+describe('NotFoundPage', () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -23,12 +23,12 @@ describe('loader', () => {
     container = null;
   });
 
-  it('renders loader', () => {
+  it('renders with correct message', () => {
     act(() => {
       createRoot(container as HTMLDivElement)
-        .render(<Loader />);
+        .render(<NotFoundPage />);
     });
-    expect(container?.getElementsByClassName('Loader').length)
-      .toBe(1);
+    expect(container?.textContent)
+      .toBe('Page not found');
   });
 });
